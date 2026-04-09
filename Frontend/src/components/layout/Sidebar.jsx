@@ -1,10 +1,10 @@
 import {
   ArrowRightOnRectangleIcon,
-  CalendarDaysIcon,
-  ChartBarIcon,
+  // CalendarDaysIcon,
+  // ChartBarIcon,
   Cog6ToothIcon,
   FolderIcon,
-  QuestionMarkCircleIcon,
+  //QuestionMarkCircleIcon,
   Squares2X2Icon,
   UserGroupIcon,
   XMarkIcon,
@@ -60,13 +60,13 @@ const Sidebar = ({
     { name: 'Dashboard', path: '/dashboard', icon: Squares2X2Icon },
     { name: 'Team', path: '/active-members', icon: UserGroupIcon },
     { name: 'Projects', path: '/projects', icon: FolderIcon },
-    { name: 'Calendar', path: '/calendar', icon: CalendarDaysIcon },
-    { name: 'Analytics', path: '/analytics', icon: ChartBarIcon },
+    // { name: 'Calendar', path: '/calendar', icon: CalendarDaysIcon },
+    // { name: 'Analytics', path: '/analytics', icon: ChartBarIcon },
   ];
 
   const bottomItems = [
     { name: 'Settings', path: '/settings', icon: Cog6ToothIcon },
-    { name: 'Help', path: '/help', icon: QuestionMarkCircleIcon },
+    // { name: 'Help', path: '/help', icon: QuestionMarkCircleIcon },
   ];
 
   const isCollapsedView = !isMobile && isCollapsed;
@@ -251,58 +251,6 @@ const Sidebar = ({
             </span>
           </button>
         </motion.div>
-
-        {/* CTA Card */}
-        {!isCollapsedView && (
-          <motion.div
-            initial={false}
-            animate={{ opacity: 1, y: 0 }}
-            className="relative overflow-hidden rounded-3xl border p-6 backdrop-blur-sm transition-all duration-500"
-            style={{
-              borderColor: isDarkMode ? 'rgba(23, 225, 255, 0.1)' : 'rgba(11, 14, 17, 0.1)',
-              backgroundColor: isDarkMode ? 'rgba(23, 225, 255, 0.05)' : 'rgba(11, 14, 17, 0.03)',
-            }}
-          >
-            {/* Decorative Background */}
-            <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-[#17E1FF] blur-3xl opacity-10" />
-            <div className="absolute bottom-0 left-0 w-20 h-20 rounded-full bg-[#17E1FF] blur-2xl opacity-5" />
-
-            <div className="relative z-10">
-              <div className="w-10 h-10 rounded-full bg-[#17E1FF]/20 flex items-center justify-center mb-4">
-                <svg
-                  className="w-5 h-5 text-[#17E1FF]"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M13 10V3L4 14h7v7l9-11h-7z"
-                  />
-                </svg>
-              </div>
-              <h4
-                className={`font-black text-sm mb-1 uppercase tracking-tight ${
-                  isDarkMode ? 'text-[#E6E8E5]' : 'text-[#0B0E11]'
-                }`}
-              >
-                Upgrade Pro
-              </h4>
-              <p
-                className={`text-xs mb-4 leading-relaxed font-light ${
-                  isDarkMode ? 'text-[#E6E8E5]/50' : 'text-[#0B0E11]/70'
-                }`}
-              >
-                Unlock advanced features and unlimited projects.
-              </p>
-              <button className="w-full py-2.5 rounded-2xl bg-[#E6E8E5] text-[#0B0E11] text-sm font-black border uppercase tracking-wide hover:scale-[1.02] transition-transform shadow-lg">
-                Upgrade Now
-              </button>
-            </div>
-          </motion.div>
-        )}
       </div>
     </motion.aside>
   );

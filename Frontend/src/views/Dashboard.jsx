@@ -6,16 +6,12 @@ import {
   FolderIcon,
   MagnifyingGlassIcon,
   MoonIcon,
-  PauseIcon,
-  PlayIcon,
   PlusIcon,
   SunIcon,
-  VideoCameraIcon,
 } from '@heroicons/react/24/outline';
 import { motion } from 'framer-motion';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Bar, BarChart, Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 import Sidebar from '../components/layout/Sidebar';
 import ActiveMember from '../components/page/ActiveMember';
 import { useTheme } from '../context/ThemeContext';
@@ -31,11 +27,8 @@ const Dashboard = () => {
   const { user, isAuthenticated } = useAppSelector(state => state.auth);
   const socketConnected = useAppSelector(state => state.socket.connected);
 
-  const [timerActive, setTimerActive] = useState(false);
-  const [time, setTime] = useState(5048);
   const [searchQuery, setSearchQuery] = useState('');
   const { isDarkMode, toggleTheme } = useTheme();
-  const [chartsReady, setChartsReady] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() =>
     window.matchMedia('(min-width: 1024px)').matches
   );
@@ -72,43 +65,7 @@ const Dashboard = () => {
     if (isAuthenticated) {
       dispatch({ type: 'socket/init' });
     }
-    // return () => {
-    //   dispatch({ type: 'socket/disconnect' });
-    // };
   }, [isAuthenticated, dispatch]);
-
-  useEffect(() => {
-    let interval;
-    if (timerActive) {
-      interval = setInterval(() => {
-        setTime(prev => prev + 1);
-      }, 1000);
-    }
-    return () => clearInterval(interval);
-  }, [timerActive]);
-
-  const formatTime = seconds => {
-    const h = Math.floor(seconds / 3600);
-    const m = Math.floor((seconds % 3600) / 60);
-    const s = seconds % 60;
-    return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-  };
-
-  const weeklyData = [
-    { name: 'Sun', value: 30 },
-    { name: 'Mon', value: 45 },
-    { name: 'Tue', value: 38 },
-    { name: 'Wed', value: 65 },
-    { name: 'Thu', value: 40 },
-    { name: 'Fri', value: 35 },
-    { name: 'Sat', value: 42 },
-  ];
-
-  const pieData = [
-    { name: 'Completed', value: 41, color: '#17E1FF' },
-    { name: 'In Progress', value: 35, color: '#0B0E11' },
-    { name: 'Pending', value: 24, color: isDarkMode ? '#E6E8E5' : '#0B0E11' },
-  ];
 
   const expandSidebar = () => setIsSidebarCollapsed(false);
   const collapseSidebar = () => setIsSidebarCollapsed(true);
@@ -122,11 +79,6 @@ const Dashboard = () => {
       setIsSidebarCollapsed(false);
     }
   }, [isLargeScreen]);
-
-  useEffect(() => {
-    const frame = requestAnimationFrame(() => setChartsReady(true));
-    return () => cancelAnimationFrame(frame);
-  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -143,23 +95,6 @@ const Dashboard = () => {
       opacity: 1,
       transition: { duration: 0.6, ease: EASE },
     },
-  };
-
-  const CustomTooltip = ({ active, payload }) => {
-    if (active && payload && payload.length) {
-      return (
-        <div
-          className={`px-4 py-2 rounded-xl shadow-2xl border backdrop-blur-xl ${
-            isDarkMode
-              ? 'bg-[#0B0E11]/90 text-[#E6E8E5] border-[#17E1FF]/20'
-              : 'bg-white/90 text-[#0B0E11] border-[#0B0E11]/15'
-          }`}
-        >
-          <p className="font-bold text-sm">{payload[0].value} hours</p>
-        </div>
-      );
-    }
-    return null;
   };
 
   const isMemberOnline = member => {
@@ -312,6 +247,7 @@ const Dashboard = () => {
               >
                 {isDarkMode ? <SunIcon className="w-6 h-6" /> : <MoonIcon className="w-6 h-6" />}
               </motion.button>
+
               <motion.button
                 onClick={() => navigate('/meeting')}
                 whileHover={{ scale: 1.05 }}
@@ -325,9 +261,10 @@ const Dashboard = () => {
               >
                 <ChatBubbleOvalLeftEllipsisIcon className="w-6 h-6" />
               </motion.button>
+
               <div
                 onClick={() => navigate('/settings')}
-                className={`flex items-center gap-3 pl-4 ml-4 border-l ${
+                className={`flex items-center gap-3 pl-4 ml-4 border-l cursor-pointer ${
                   isDarkMode ? 'border-white/10' : 'border-[#0B0E11]/15'
                 }`}
               >
@@ -341,7 +278,6 @@ const Dashboard = () => {
                   alt="Profile"
                   className="w-11 h-11 rounded-full object-cover ring-2 ring-[#17E1FF]/30"
                 />
-
                 <div className="block">
                   <p className="text-sm font-bold">{user?.username || 'Guest User'}</p>
                   <p
@@ -431,7 +367,6 @@ const Dashboard = () => {
                 </p>
                 <h2 className="text-6xl font-black mb-6">{stats?.totalProjects || 0}</h2>
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#17E1FF]/20 backdrop-blur-sm">
-                  {/* <Zap className="w-3 h-3 text-[#17E1FF]" /> */}
                   <span className="text-xs font-bold text-[#17E1FF]">+12%</span>
                 </div>
               </div>
@@ -577,191 +512,6 @@ const Dashboard = () => {
               className="lg:col-span-4 lg:h-[520px]"
             >
               <ActiveMember className="h-full" onClick={() => navigate('/active-members')} />
-            </motion.div>
-          </div>
-
-          {/* Project Progress & Reminder */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-            {/* Project Progress */}
-            <motion.div
-              variants={itemVariants}
-              className={`rounded-[2rem] lg:rounded-[2.5rem] p-6 lg:p-10 flex flex-col lg:flex-row items-center justify-between gap-6 ${
-                isDarkMode ? 'bg-[#1a1c19]' : 'bg-white/90'
-              }`}
-            >
-              <div className="w-full lg:w-auto">
-                <h3 className="text-xl lg:text-2xl font-bold mb-4 lg:mb-6 tracking-tight">
-                  Progress Overview
-                </h3>
-                <div className="space-y-3 lg:space-y-4">
-                  {pieData.map((item, i) => (
-                    <div key={i} className="flex items-center gap-3">
-                      <span
-                        className="w-3 lg:w-4 h-3 lg:h-4 rounded-full"
-                        style={{ backgroundColor: item.color }}
-                      ></span>
-                      <span className="font-medium text-sm lg:text-base">{item.name}</span>
-                      <span
-                        className={`ml-auto font-bold text-sm lg:text-base ${
-                          isDarkMode ? 'text-[#C2CABB]/60' : 'text-[#10120F]/60'
-                        }`}
-                      >
-                        {item.value}%
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="relative w-40 h-40 lg:w-48 lg:h-48">
-                {chartsReady && (
-                  <ResponsiveContainer width="100%" height="100%" minHeight={1} minWidth={1}>
-                    <PieChart>
-                      <Pie
-                        data={pieData}
-                        innerRadius={60}
-                        outerRadius={75}
-                        startAngle={90}
-                        endAngle={-270}
-                        paddingAngle={3}
-                        dataKey="value"
-                        cornerRadius={8}
-                        stroke="none"
-                      >
-                        {pieData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                      </Pie>
-                    </PieChart>
-                  </ResponsiveContainer>
-                )}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-                  <h2 className="text-3xl lg:text-4xl font-bold">41%</h2>
-                  <p
-                    className={`text-xs font-medium uppercase tracking-wide ${
-                      isDarkMode ? 'text-[#C2CABB]/50' : 'text-[#10120F]/50'
-                    }`}
-                  >
-                    Done
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Reminder */}
-            <motion.div
-              variants={itemVariants}
-              className={`rounded-[2rem] lg:rounded-[2.5rem] p-6 lg:p-10 flex flex-col justify-between ${
-                isDarkMode ? 'bg-[#1a1c19]' : 'bg-white/90'
-              }`}
-            >
-              <div>
-                <h3 className="text-xl lg:text-2xl font-bold mb-4 lg:mb-6 tracking-tight">
-                  Start Meeting
-                </h3>
-                <h4 className="text-lg lg:text-xl font-bold mb-2">Arc Company Review</h4>
-                <p
-                  className={`font-medium text-sm lg:text-base ${
-                    isDarkMode ? 'text-[#C2CABB]/60' : 'text-[#10120F]/60'
-                  }`}
-                >
-                  now
-                </p>
-              </div>
-              <button
-                onClick={() => navigate('/meeting')}
-                className="w-full py-4 lg:py-5 bg-[#10120F] text-[#C2CABB] rounded-2xl lg:rounded-3xl font-bold hover:scale-[1.02] transition-transform flex items-center justify-center gap-3 text-sm lg:text-base mt-6"
-              >
-                <VideoCameraIcon className="w-5 lg:w-6 h-5 lg:h-6" />
-                Join Meeting
-              </button>
-            </motion.div>
-          </div>
-
-          {/* Analytics & Timer */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Analytics with Gradient Bars */}
-            <motion.div
-              variants={itemVariants}
-              className={`lg:col-span-2 rounded-3xl p-10 backdrop-blur-2xl border ${
-                isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white/90 border-[#0B0E11]/15'
-              }`}
-            >
-              <h3 className="text-2xl font-black mb-8 uppercase tracking-tighter">
-                Weekly Analytics
-              </h3>
-              <div className="h-72">
-                {chartsReady && (
-                  <ResponsiveContainer width="100%" height="100%" minHeight={1} minWidth={1}>
-                    <BarChart data={weeklyData} barSize={50}>
-                      <defs>
-                        <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#10120F" stopOpacity={1} />
-                          <stop offset="100%" stopColor="#5a6152" stopOpacity={0.6} />
-                        </linearGradient>
-                      </defs>
-                      <Tooltip content={<CustomTooltip />} cursor={false} />
-                      <Bar dataKey="value" radius={[20, 20, 0, 0]} fill="url(#barGradient)">
-                        {weeklyData.map((entry, index) => (
-                          <Cell
-                            key={`cell-${index}`}
-                            className="transition-opacity hover:opacity-70"
-                          />
-                        ))}
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
-                )}
-              </div>
-              <div
-                className={`flex justify-between px-4 lg:px-8 mt-4 text-xs lg:text-sm font-medium ${
-                  isDarkMode ? 'text-[#C2CABB]/50' : 'text-[#10120F]/50'
-                }`}
-              >
-                {weeklyData.map(d => (
-                  <span key={d.name}>{d.name}</span>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Time Tracker */}
-            <motion.div
-              variants={itemVariants}
-              className={`rounded-[2rem] lg:rounded-[2.5rem] p-6 lg:p-10 flex flex-col justify-between ${
-                isDarkMode ? 'bg-[#10120F]' : 'bg-[#10120F]'
-              } text-[#C2CABB]`}
-            >
-              <div>
-                <h3 className="text-sm lg:text-lg font-light mb-8 lg:mb-10 opacity-60 uppercase tracking-widest">
-                  Time Tracker
-                </h3>
-                <div className="text-center mb-8 lg:mb-12">
-                  <h2 className="text-4xl lg:text-5xl font-mono font-bold tracking-wider">
-                    {formatTime(time)}
-                  </h2>
-                </div>
-              </div>
-
-              <div className="flex justify-center gap-3 lg:gap-4">
-                <button
-                  onClick={() => setTimerActive(!timerActive)}
-                  className="w-14 lg:w-16 h-14 lg:h-16 rounded-full bg-[#C2CABB] text-[#10120F] flex items-center justify-center hover:scale-110 transition-transform"
-                >
-                  {timerActive ? (
-                    <PauseIcon className="w-5 lg:w-6 h-5 lg:h-6" />
-                  ) : (
-                    <PlayIcon className="w-5 lg:w-6 h-5 lg:h-6 ml-1" />
-                  )}
-                </button>
-                <button
-                  onClick={() => {
-                    setTimerActive(false);
-                    setTime(0);
-                  }}
-                  className="w-14 lg:w-16 h-14 lg:h-16 rounded-full bg-red-500/20 text-red-400 flex items-center justify-center hover:scale-110 transition-transform"
-                >
-                  <div className="w-4 lg:w-5 h-4 lg:h-5 bg-current rounded-sm"></div>
-                </button>
-              </div>
             </motion.div>
           </div>
         </motion.div>
