@@ -15,6 +15,7 @@ import { useTheme } from '../../../context/ThemeContext';
 import { notify } from '../../../lib/notify';
 import { createRingtoneLoop, playHorn } from '../../../lib/sounds';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import AIChat from "../../../components/ui/AIChat";
 import {
   CALL_STATUS,
   callAcceptRequested,
@@ -501,16 +502,62 @@ const Project = () => {
 
               {/* Right: Chat (Scrollable) - 1/3 width */}
               <ResizableContainer minWidth={200} className="flex-[1]">
-                <div
-                  className={`h-full rounded-xl border border-white/10 overflow-hidden ${
-                    isDarkMode ? 'bg-white/5' : 'bg-white/90'
-                  }`}
-                >
-                  <ChatSection
-                    projectId={currentProject._id}
-                    onStartCall={startCall}
-                    onStartGroupCall={startGroupCall}
+                <div className="h-full rounded-xl border border-white/10 overflow-hidden flex flex-col">
+  
+                 <div className="h-full flex flex-col">
+
+                  {/* TEAM CHAT */}
+                  <div
+                    className="overflow-auto"
+                    style={{ height: "60%" }}
+                  >
+                    <ChatSection
+                      projectId={currentProject._id}
+                      onStartCall={startCall}
+                      onStartGroupCall={startGroupCall}
+                    />
+                  </div>
+
+                  {/* RESIZER */}
+                  <div
+                    style={{
+                      height: "6px",
+                      cursor: "row-resize",
+                      background: "#17E1FF33"
+                    }}
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+
+                      const container = e.target.parentElement;
+                      const chatDiv = container.children[0];
+
+                      const startY = e.clientY;
+                      const startHeight = chatDiv.offsetHeight;
+
+                      const onMove = (ev) => {
+                        const newHeight = startHeight + (ev.clientY - startY);
+                        const percent = (newHeight / container.offsetHeight) * 100;
+
+                        chatDiv.style.height = percent + "%";
+                      };
+
+                      const stop = () => {
+                        document.removeEventListener("mousemove", onMove);
+                        document.removeEventListener("mouseup", stop);
+                      };
+
+                      document.addEventListener("mousemove", onMove);
+                      document.addEventListener("mouseup", stop);
+                    }}
                   />
+
+                  {/* AI CHAT */}
+                  <div className="flex-1 overflow-auto">
+                    <AIChat />
+                  </div>
+
+                </div>
+
                 </div>
               </ResizableContainer>
             </motion.div>

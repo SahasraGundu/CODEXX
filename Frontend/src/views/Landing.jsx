@@ -1,13 +1,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import {
-  Github,
-  Globe,
-  Instagram,
-  Linkedin,
-  Mail,
   Shield,
   Terminal,
-  Twitter,
   Users,
   Zap,
 } from 'lucide-react';
@@ -59,7 +53,6 @@ const Hero = ({ onInitialize }) => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          // Fix: Transition corrected by using typed EASE constant to avoid line 162 error
           transition={{ duration: 0.8, ease: EASE }}
           className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 mb-10"
         >
@@ -70,7 +63,6 @@ const Hero = ({ onInitialize }) => {
         <motion.h1
           initial={{ opacity: 0, letterSpacing: '0.2em' }}
           animate={{ opacity: 1, letterSpacing: '-0.04em' }}
-          // Fix: Transition corrected by using typed EASE constant to avoid line 172 error
           transition={{ duration: 1.5, ease: EASE }}
           className="text-6xl md:text-[140px] font-black leading-[0.85] uppercase mb-10"
         >
@@ -86,8 +78,8 @@ const Hero = ({ onInitialize }) => {
           transition={{ delay: 0.5, duration: 1 }}
           className="text-white/40 text-lg md:text-xl max-w-2xl mx-auto font-light leading-relaxed mb-12"
         >
-          High-performance collaborative engineering. Powered by Gemini AI for real-time reviews and
-          aerospace-grade sync.
+          High-performance collaborative engineering. Powered by Groq AI for real-time reviews and
+          real-time sync.
         </motion.p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
@@ -110,7 +102,6 @@ const Hero = ({ onInitialize }) => {
       <motion.div
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        // Fix: Transition corrected by using typed EASE constant to avoid line 204 error
         transition={{ delay: 0.8, duration: 1.2, ease: EASE }}
         className="mt-20 w-full max-w-6xl px-4 relative"
       >
@@ -127,7 +118,7 @@ const Hero = ({ onInitialize }) => {
           <div className="absolute inset-0 p-10 font-mono text-sm opacity-40 group-hover:opacity-100 transition-opacity duration-700">
             <div className="text-[#17E1FF]">async function</div> analyzeCode(bundle) {'{'}
             <div className="ml-4 text-white/60 mt-1">
-              const review = await gemini.review(bundle);
+              const review = await groq.review(bundle);
             </div>
             <div className="ml-4 text-[#FFB020] mt-1">if (review.hasOptimizations) {'{'}</div>
             <div className="ml-8 text-white/60">return review.apply(bundle);</div>
@@ -201,8 +192,8 @@ const BentoGrid = () => {
                 Global Sync Engine
               </h3>
               <p className="text-white/40 max-w-md font-light">
-                Our proprietary operational transformation layer ensures conflict-free editing
-                across continents with sub-50ms latency.
+                Our operational transformation layer ensures conflict-free editing
+                across sessions with sub-50ms latency.
               </p>
             </div>
           </div>
@@ -210,16 +201,16 @@ const BentoGrid = () => {
 
         <GlassCard className="md:col-span-4 border-[#FFB020]/20">
           <Zap className="w-8 h-8 text-[#FFB020] mb-6" />
-          <h3 className="text-xl font-black uppercase mb-2 tracking-tight">Gemini 2.5 Pro</h3>
+          <h3 className="text-xl font-black uppercase mb-2 tracking-tight">Groq AI</h3>
           <p className="text-sm text-white/30 font-light italic">
-            Automated refactoring and deep logical analysis integrated into your commit flow.
+            Automated refactoring and deep logical analysis integrated into your workflow.
           </p>
         </GlassCard>
 
         <GlassCard className="md:col-span-4 bg-black/60">
           <Terminal className="w-8 h-8 text-green-500/50 mb-6" />
           <div className="font-mono text-[10px] text-green-500/40">
-            $ codex deploy --prod <br />
+            $ codesync deploy --prod <br />
             [INFO] Analyzing bundle... <br />
             [OK] Build verified.
           </div>
@@ -228,11 +219,11 @@ const BentoGrid = () => {
         <GlassCard className="md:col-span-12 flex flex-col md:flex-row items-center gap-12">
           <div className="flex-1">
             <h3 className="text-3xl font-black uppercase mb-4 tracking-tighter">
-              Enterprise Shielding
+              Secure Collaboration
             </h3>
             <p className="text-white/40 font-light">
-              End-to-end encryption for every keystroke. Your source code never leaves your private
-              cloud instance.
+              End-to-end encryption for every keystroke. Your source code stays safe within your
+              session at all times.
             </p>
           </div>
           <Shield className="w-24 h-24 text-white/5 opacity-40 shrink-0" />
@@ -245,14 +236,13 @@ const BentoGrid = () => {
 const StatsSection = () => {
   const stats = [
     { label: 'Latency', value: '14ms' },
-    { label: 'Availability', value: '99.9%' },
+    { label: 'Uptime', value: '99.9%' },
     { label: 'Security', value: 'A+' },
-    { label: 'Users', value: '850K+' },
   ];
 
   return (
     <div className="border-y border-white/5 bg-black/20 py-16">
-      <div className="max-w-[1440px] mx-auto px-8 grid grid-cols-2 md:grid-cols-4 gap-12">
+      <div className="max-w-[1440px] mx-auto px-8 grid grid-cols-2 md:grid-cols-3 gap-12">
         {stats.map((stat, i) => (
           <div key={i} className="flex flex-col gap-2">
             <HUDLabel>{stat.label}</HUDLabel>
@@ -271,17 +261,17 @@ const ProcessSection = () => {
     {
       id: '01',
       title: 'Initialize',
-      desc: 'Sync your repositories via secure SSH tunneling in seconds.',
+      desc: 'Create your team workspace and set up secure credentials in seconds.',
     },
     {
       id: '02',
       title: 'Collaborate',
-      desc: 'Invite your team and begin zero-latency pair programming.',
+      desc: 'Invite your team and begin real-time pair programming together.',
     },
     {
       id: '03',
       title: 'Optimize',
-      desc: 'Run Gemini AI reviews to scan for performance bottlenecks.',
+      desc: 'Run Groq AI reviews to scan for performance bottlenecks.',
     },
     {
       id: '04',
@@ -410,7 +400,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-20 mb-32">
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-8">
-              <div className="w-8 h-8  rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center">
                 <img
                   src="/logo.png"
                   alt="Logo"
@@ -421,62 +411,12 @@ const Footer = () => {
                   }}
                 />
               </div>
-              <span className="text-xl font-bold uppercase tracking-tight">CodeX</span>
+              <span className="text-xl font-bold uppercase tracking-tight">CodeSync</span>
             </div>
             <p className="text-white/30 text-sm max-w-sm font-light leading-relaxed mb-10">
-              The high-fidelity workspace for distributed engineering teams. Built with speed and
-              security at its core.
+              A collaborative code editor for engineering teams. Built with real-time sync,
+              AI-powered reviews, and seamless communication.
             </p>
-            <div className="flex gap-4">
-              <a
-                href="mailto:sameerkhan27560@gmail.com"
-                className="w-10 h-10 rounded-xl border border-white/5 bg-white/5 flex items-center justify-center hover:border-[#17E1FF]  transition-all"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Mail className="w-4 h-4" />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/sameer-khan2210"
-                className="w-10 h-10 rounded-xl border border-white/5 bg-white/5 flex items-center justify-center hover:border-[#17E1FF] transition-all"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Linkedin className="w-4 h-4" />
-              </a>
-              <a
-                href="https://www.instagram.com/isameer_22/"
-                className="w-10 h-10 rounded-xl border border-white/5 bg-white/5 flex items-center justify-center hover:border-[#17E1FF] transition-all"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Instagram className="w-4 h-4" />
-              </a>
-              <a
-                href="https://x.com/Sameer2210_"
-                className="w-10 h-10 rounded-xl border border-white/5 bg-white/5 flex items-center justify-center hover:border-[#17E1FF] transition-all"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Twitter className="w-4 h-4" />
-              </a>
-              <a
-                href="https://github.com/sameer2210"
-                className="w-10 h-10 rounded-xl border border-white/5 bg-white/5 flex items-center justify-center hover:border-[#17E1FF] transition-all"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Github className="w-4 h-4" />
-              </a>
-              <a
-                href="https://portfolio-coral-two-16.vercel.app/"
-                className="w-10 h-10 rounded-xl border border-white/5 bg-white/5 flex items-center justify-center hover:border-[#17E1FF] transition-all"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Globe className="w-4 h-4" />
-              </a>
-            </div>
           </div>
 
           <div>
@@ -485,9 +425,8 @@ const Footer = () => {
               <li className="hover:text-[#17E1FF] cursor-pointer transition-colors">Workspace</li>
               <li className="hover:text-[#17E1FF] cursor-pointer transition-colors">AI Analysis</li>
               <li className="hover:text-[#17E1FF] cursor-pointer transition-colors">
-                Security Core
+                Security
               </li>
-              <li className="hover:text-[#17E1FF] cursor-pointer transition-colors">Changelog</li>
             </ul>
           </div>
 
@@ -498,14 +437,13 @@ const Footer = () => {
               <li className="hover:text-[#17E1FF] cursor-pointer transition-colors">
                 API References
               </li>
-              <li className="hover:text-[#17E1FF] cursor-pointer transition-colors">Community</li>
               <li className="hover:text-[#17E1FF] cursor-pointer transition-colors">Support</li>
             </ul>
           </div>
         </div>
 
         <div className="flex flex-col md:flex-row justify-between items-center pt-12 border-t border-white/5 gap-6">
-          <HUDLabel className="opacity-20">© 2025 CODEX AEROSPACE. ALL RIGHTS RESERVED.</HUDLabel>
+          <HUDLabel className="opacity-20">© 2025 CODESYNC. ALL RIGHTS RESERVED.</HUDLabel>
           <div className="flex gap-10">
             <HUDLabel className="hover:opacity-100 cursor-pointer transition-opacity">
               Privacy
@@ -519,6 +457,7 @@ const Footer = () => {
     </footer>
   );
 };
+
 // --- Main View ---
 
 const Landing = () => {
@@ -535,27 +474,13 @@ const Landing = () => {
         <Hero onInitialize={() => navigate('/login')} />
         <StatsSection />
         <BentoGrid />
-
-        {/* Kinetic Typography Break */}
-        <section className="py-60 px-8 text-center overflow-hidden">
-          <motion.h2
-            initial={{ scale: 0.8, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 0.05 }}
-            // Fix: Transition corrected by using typed EASE constant to avoid line 456 error
-            transition={{ duration: 1.5, ease: EASE }}
-            className="text-[12vw] font-black uppercase tracking-[-0.05em] leading-[0.7] whitespace-nowrap select-none"
-          >
-            AI REVIEW
-          </motion.h2>
-        </section>
-
         <ProcessSection />
         <OnboardingSection />
 
         {/* Cinematic CTA */}
         <section className="py-60 px-8 relative overflow-hidden bg-gradient-to-t from-[#17E1FF]/10 via-transparent to-transparent">
           <div className="max-w-4xl mx-auto text-center relative z-10">
-            <HUDLabel className="mb-8 block">Ready for Acceleration?</HUDLabel>
+            <HUDLabel className="mb-8 block">Ready to Collaborate?</HUDLabel>
             <h2 className="text-5xl md:text-[100px] font-black uppercase tracking-tighter leading-[0.9] mb-16">
               Empower <br /> Your Team.
             </h2>
@@ -564,7 +489,7 @@ const Landing = () => {
               onClick={() => navigate('/register')}
               className="px-16 py-7 bg-white text-black font-black uppercase tracking-widest rounded-full hover:bg-[#17E1FF] transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_80px_rgba(255,255,255,0.2)]"
             >
-              Launch Free Instance
+              Get Started
             </button>
           </div>
 

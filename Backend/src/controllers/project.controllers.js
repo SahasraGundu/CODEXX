@@ -6,6 +6,11 @@ import {
   reviewProject,
   updateProject,
 } from '../services/project.service.js';
+import Groq from "groq-sdk";
+const groq = new Groq({
+  apiKey: process.env.GROQ_API_KEY,
+});
+
 
 export async function createProjectController(req, res) {
   try {
@@ -134,6 +139,35 @@ export async function executeProjectCodeController(req, res) {
     return res.status(500).json({
       success: false,
       message: error.message,
+    });
+  }
+}
+
+export async function aiChatController(req, res) {
+  try {
+    const { message } = req.body;
+
+    if (!message) {
+      return res.status(400).json({ success: false, message: "No message" });
+    }
+
+    const response = await groq.chat.completions.create({
+      model: "llama-3.1-8b-instant", // ✅ WORKING NOW
+      messages: [
+        { role: "user", content: message }
+      ],
+    });
+
+    return res.json({
+      success: true,
+      reply: response.choices[0]?.message?.content || "No response",
+    });
+
+  } catch (err) {
+    console.error("AI ERROR:", err.message);
+    return res.status(500).json({
+      success: false,
+      message: "AI failed",
     });
   }
 }

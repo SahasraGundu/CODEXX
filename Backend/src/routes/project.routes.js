@@ -7,18 +7,22 @@ import {
   reviewProjectController,
   updateProjectController,
   executeProjectCodeController,
+  aiChatController
 } from '../controllers/project.controllers.js';
+
 import { verifyToken } from '../middlewares/authMiddleware.js';
 
 const router = Router();
-router.use(verifyToken);
 
-router.post('/create', createProjectController);
-router.get('/get-all', getAllProjectsController);
+// Protected routes
+router.post('/create', verifyToken, createProjectController);
+router.get('/get-all', verifyToken, getAllProjectsController);
+router.get('/:id', verifyToken, getProjectController);
+router.put('/:id', verifyToken, updateProjectController);
+router.post('/:id/execute', verifyToken, executeProjectCodeController);
+router.post('/:id/review', verifyToken, reviewProjectController);
 
-router.get('/:id', getProjectController);
-router.put('/:id', updateProjectController);
-router.post('/:id/execute', executeProjectCodeController);
-router.post('/:id/review', reviewProjectController);
+// ✅ PUBLIC (NO TOKEN)
+router.post("/ai-chat", aiChatController);
 
 export default router;
