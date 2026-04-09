@@ -7,12 +7,15 @@ export default function AIChat() {
   const sendMessage = async () => {
     if (!input.trim()) return;
 
+    const token = localStorage.getItem("token");
+
     const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/projects/ai-chat`, {
-      method: "POST",
-      headers: {
+    method: "POST",
+    headers: {
         "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ message: input }),
+        "Authorization": `Bearer ${token}`   // ✅ IMPORTANT
+    },
+    body: JSON.stringify({ message: input }),
     });
 
     const data = await res.json();
