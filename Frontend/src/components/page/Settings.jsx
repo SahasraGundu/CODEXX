@@ -25,10 +25,6 @@ const EASE = [0.22, 1, 0.36, 1];
 // Tab Configurations
 const TABS = [
   { id: 'profile', label: 'Profile', icon: UserCircleIcon },
-  { id: 'team', label: 'Team', icon: UsersIcon },
-  { id: 'security', label: 'Security', icon: ShieldCheckIcon },
-  { id: 'billing', label: 'Billing', icon: CreditCardIcon },
-  { id: 'notifications', label: 'Notifications', icon: BellIcon },
 ];
 
 const Toggle = ({ enabled, onChange, isDarkMode }) => (
